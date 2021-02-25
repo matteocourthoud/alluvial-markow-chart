@@ -21,7 +21,7 @@ The user specifies the iterations at which the distribution over states has to b
 x = [1, 2, 3, 99, 100];
 ```
 
-They the user provides labels for the classes, the time steps and the title of the graph.
+The user provides labels for the classes, the time steps and the title of the graph.
 
 ```
 ylabels = ["Duopoly", "Mixed", "Monopoly"];
