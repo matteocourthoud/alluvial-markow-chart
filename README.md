@@ -27,4 +27,4 @@ title = "State to State Transitions";
 
 The `plot_transitions`command produces the final output.
 
-![example](/Users/mcourt/Dropbox/Code/Matlab/Alluvial/example.png)
+![example](example.png)
