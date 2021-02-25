@@ -1,6 +1,8 @@
 # Alluvial Markow Chart
 by [Matteo Courthoud](https://matteocourthoud.github.io/)
 
+![example](example.png)
+
 ---
 
 This class plots alluvial charts starting from a Markow transition matrix.
@@ -26,5 +28,3 @@ title = "State to State Transitions";
 ```
 
 The `plot_transitions`command produces the final output.
-
-![example](example.png)
