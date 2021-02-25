@@ -10,12 +10,12 @@ classdef alluvial
     % Properties
     properties (Constant)
         
-        c =[0.0000    0.4470    0.7410; ...
-            0.8500    0.3250    0.0980; ...
-            0.9290    0.6940    0.1250; ...
-            0.4940    0.1840    0.5560; ...
-            0.4660    0.6740    0.1880; ...
-            0.3010    0.7450    0.9330; ...
+        c =[0.0000    0.4470    0.7410
+            0.8500    0.3250    0.0980
+            0.9290    0.6940    0.1250
+            0.4940    0.1840    0.5560
+            0.4660    0.6740    0.1880
+            0.3010    0.7450    0.9330
             0.6350    0.0780    0.1840];
         n = 15;
         
@@ -94,8 +94,8 @@ classdef alluvial
             
             % Get curves
             w = J/40;
-            [bottom_x, bottom_y] = get_curves(j+w, bottom_lefts, j+1-w, bottom_rights);
-            [top_x, top_y] = get_curves(j+1-w, top_rights, j+w, top_lefts);
+            [bottom_x, bottom_y] = alluvial.get_curves(j+w, bottom_lefts, j+1-w, bottom_rights);
+            [top_x, top_y] = alluvial.get_curves(j+1-w, top_rights, j+w, top_lefts);
 
             % Get all oordinates
             X = [bottom_x; top_x];
@@ -109,8 +109,8 @@ classdef alluvial
             t = linspace(0, pi, alluvial.n);
             c = (1-cos(t))./2; 
             Ncurves = numel(y1);
-            y = repmat(y1, n, 1) + repmat(y2 - y1, n,1) .* repmat(c', 1, Ncurves);
-            x = repmat(linspace(x1, x2, n)', 1, Ncurves);
+            y = repmat(y1, alluvial.n, 1) + repmat(y2 - y1, alluvial.n,1) .* repmat(c', 1, Ncurves);
+            x = repmat(linspace(x1, x2, alluvial.n)', 1, Ncurves);
         end 
         
         
@@ -171,7 +171,7 @@ classdef alluvial
             text((J+1)/2, 1.1, "Periods", 'HorizontalAlignment', 'center', 'Fontsize', 12,'Fontweight', 'Bold', 'Color', [.4 .4 .4])
             
             % Title
-            text((J+1)/2, -0.15, title, 'HorizontalAlignment', 'center', 'Fontsize', 18)
+            text((J+1)/2, -0.13, title, 'HorizontalAlignment', 'center', 'Fontsize', 18)
             
             % Font
             set(gca, 'FontName', 'SansSerif')
