@@ -1,11 +1,13 @@
 # Alluvial Markow Chart
 by [Matteo Courthoud](https://matteocourthoud.github.io/)
 
-![example](example.png)
+class file: `alluvial.m`
+
+example file: `example.m`
 
 ---
 
-This class plots alluvial charts starting from a Markow transition matrix.
+This class produces alluvial diagrams from a Markow transition matrix. It displays the probability distribution over states at different points in time.
 
 ```
 Q = [0.6 0.1 0.3
@@ -28,3 +30,5 @@ title = "State to State Transitions";
 ```
 
 The `plot_transitions`command produces the final output.
+
+![example](example.png)
