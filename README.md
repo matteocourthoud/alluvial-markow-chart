@@ -31,4 +31,10 @@ title = "State to State Transitions";
 
 The `plot_transitions`command produces the final output.
 
+```
+alluvial.plot_transitions(Q, x, ylabels, xlabels, title);
+```
+
+
+
 ![example](example.png)
