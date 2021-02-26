@@ -1,6 +1,6 @@
 % Example file
 
-%% Example 2: with options
+%% Example 1: without options
 
 % Set parameters
 rng(1);
