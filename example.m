@@ -9,6 +9,7 @@ xlabels = ["1", "2", "3", "\infty", "\infty"];
 title = "State to State Transitions";
 
 % Plot transitions
+figure();
 alluvial.plot_transitions(Q, x, ylabels, xlabels, title);
 saveas(gcf,'example.png');
 close();

@@ -157,10 +157,12 @@ classdef alluvial
             % Y labels
             for i=1:I
                 if y(i,1)>0.1
-                text(1-0.2, ymeans(i,1), ylabels(i), 'HorizontalAlignment', 'right','Fontweight', 'Bold', 'Color', [.4 .4 .4])
+                    text(1-0.2, ymeans(i,1), ylabels(i), 'HorizontalAlignment', 'right','Fontweight', 'Bold', 'Color', [.4 .4 .4])
+                    text(1-0.2, ymeans(i,1)+0.05, sprintf("%.2f",y(i,1)), 'HorizontalAlignment', 'right', 'Color', [.4 .4 .4])
                 end
                 if y(i,end)>0.1
                     text(J+0.2, ymeans(i,end), ylabels(i),'Fontweight', 'Bold', 'Color', [.4 .4 .4])
+                    text(J+0.2, ymeans(i,end)+0.05, sprintf("%.2f",y(i,end)), 'Color', [.4 .4 .4])
                 end
             end
             
