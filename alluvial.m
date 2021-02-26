@@ -7,46 +7,56 @@
 
 classdef alluvial
     
-    % Properties
-    properties (Constant)
-        
-        c =[0.0000    0.4470    0.7410
-            0.8500    0.3250    0.0980
-            0.9290    0.6940    0.1250
-            0.4940    0.1840    0.5560
-            0.4660    0.6740    0.1880
-            0.3010    0.7450    0.9330
-            0.6350    0.0780    0.1840];
-        n = 15;
-        
-    end
-    
-    
-    
     % Methods
     methods (Static)
     
-        function plot_transitions(Q, x, ylabels, xlabels, title)
+        function plot_transitions(Q, x, varargin)
+            %
+            % Inputs
+            % ------
+            %
+            % - Q (mat):
+            %       square transition matrix
+            % 
+            % - x (array):
+            %       time periods at which to evaluate the flows
+            %
+            % Optional inputs
+            % ---------------
+            %
+            %  - ylabels (str): 
+            %       labels of y axis
+            %
+            %  - xlabels (str): 
+            %       labels of x axis
+            %
+            %  - title (str): 
+            %       plot title
+            %
+            %  - w0 (array): 
+            %       initial weights
+            
+            % Assign default values
+            [ylabels, xlabels, title, w0, palette] = alluvial.get_params(Q, x, varargin);
             
             % Generate distribution
             I = length(Q);
             J = length(x);
             mc = dtmc(Q);
-            distr = redistribute(mc, max(x));
+            distr = redistribute(mc, max(x), 'X0', w0);
             y = distr(x, :)';
             [ybars_bottom, ybars_top] = alluvial.get_ybars(y, I, J);
             
             % Init graph
-            set(gca, 'OuterPosition', [0,-0.07,0.95,1])
             axis ij
             axis off
             hold on
             
             % Plot flows
-            alluvial.plot_flows(Q, x, y, ybars_bottom, I, J)
+            alluvial.plot_flows(Q, x, y, ybars_bottom, I, J, palette)
             
             % Plot bars
-            alluvial.plot_bars(ybars_bottom, ybars_top, I, J)
+            alluvial.plot_bars(ybars_bottom, ybars_top, I, J, palette)
             
             % Prettify
             ymeans = (ybars_bottom + ybars_top) / 2;
@@ -56,12 +66,40 @@ classdef alluvial
         
         
         
+        % Assign default values for comparative statics
+        function [ylabels, xlabels, title, w0, palette] = get_params(Q, x, vars)
+            
+            % Set default values
+            ylabels = repmat("", 1, size(Q,1));
+            for i=1:size(Q,1)
+                ylabels(i) = sprintf("State %1.0f", i);
+            end
+            xlabels = string(x);
+            title = "State to State Transitions";
+            w0 = ones(1, size(Q,1))/size(Q,1);
+            palette = alluvial.get_colors("viridis", size(Q,1));
+                        
+            % Assign default values
+            for k=2:2:size(vars,2)
+                if strcmp(vars{k-1}, "xlabels")
+                    xlabels = vars{k};
+                elseif strcmp(vars{k-1}, "ylabels")
+                    ylabels = vars{k};
+                elseif strcmp(vars{k-1}, "title")
+                    title = vars{k};
+                elseif strcmp(vars{k-1}, "w0")
+                    w0 = vars{k};
+                elseif strcmp(vars{k-1}, "palette")
+                    palette = alluvial.get_colors(vars{k}, size(Q,1));
+                end
+            end
+        end
+        
+        
+        
         % Plot flows
-        function plot_flows(Q, x, y, ybars_bottom, I, J)
-            
-            % Init colors
-            c = get(gca,'ColorOrder');
-            
+        function plot_flows(Q, x, y, ybars_bottom, I, J, palette)
+                        
             % Loop over rows and columns
             for j=1:J-1
                 bottoms = ybars_bottom(:,j+1)';
@@ -81,7 +119,7 @@ classdef alluvial
                     [X, Y] = alluvial.get_coordinates(j, J, top_lefts, bottom_lefts, top_rights, bottom_rights);
 
                     % Plot
-                    patch('XData', X, 'YData', Y, 'FaceAlpha', .3, 'Facecolor', c(i,:), 'EdgeColor', 'none');
+                    patch('XData', X, 'YData', Y, 'FaceAlpha', .3, 'Facecolor', palette(i,:), 'EdgeColor', 'none');
                 end
             end
             
@@ -106,11 +144,11 @@ classdef alluvial
         
         % Makes curve between two points
         function [x, y] = get_curves(x1, y1, x2, y2)
-            t = linspace(0, pi, alluvial.n);
+            t = linspace(0, pi, 15);
             c = (1-cos(t))./2; 
             Ncurves = numel(y1);
-            y = repmat(y1, alluvial.n, 1) + repmat(y2 - y1, alluvial.n,1) .* repmat(c', 1, Ncurves);
-            x = repmat(linspace(x1, x2, alluvial.n)', 1, Ncurves);
+            y = repmat(y1, 15, 1) + repmat(y2 - y1, 15,1) .* repmat(c', 1, Ncurves);
+            x = repmat(linspace(x1, x2, 15)', 1, Ncurves);
         end 
         
         
@@ -132,7 +170,7 @@ classdef alluvial
         
         
         % Plot bars
-        function plot_bars(ybars_bottom, ybars_top, I, J)
+        function plot_bars(ybars_bottom, ybars_top, I, J, palette)
             
             % Bar width (half)
             w = J/40;            
@@ -143,7 +181,7 @@ classdef alluvial
                 for i=1:I
                     y_corners = [ybars_bottom(i,j), ybars_bottom(i,j), ybars_top(i,j), ybars_top(i,j)];
                     x_corners = [j-w, j+w, j+w, j-w];
-                    patch('X', x_corners, 'Y', y_corners, 'FaceAlpha', .8, 'Facecolor', alluvial.c(i,:), 'EdgeColor', 'none');
+                    patch('X', x_corners, 'Y', y_corners, 'FaceAlpha', .8, 'Facecolor', palette(i,:), 'EdgeColor', 'none');
                 end
                 hold on
             end
@@ -156,13 +194,13 @@ classdef alluvial
             
             % Y labels
             for i=1:I
-                if y(i,1)>0.1
-                    text(1-0.2, ymeans(i,1), ylabels(i), 'HorizontalAlignment', 'right','Fontweight', 'Bold', 'Color', [.4 .4 .4])
-                    text(1-0.2, ymeans(i,1)+0.05, sprintf("%.2f",y(i,1)), 'HorizontalAlignment', 'right', 'Color', [.4 .4 .4])
+                if y(i,1)>0.05
+                    text(1-0.2, ymeans(i,1)-0.02, ylabels(i), 'HorizontalAlignment', 'right','Fontweight', 'Bold', 'Color', [.4 .4 .4])
+                    text(1-0.2, ymeans(i,1)+0.02, sprintf("%.2f",y(i,1)), 'HorizontalAlignment', 'right', 'Color', [.4 .4 .4])
                 end
-                if y(i,end)>0.1
-                    text(J+0.2, ymeans(i,end), ylabels(i),'Fontweight', 'Bold', 'Color', [.4 .4 .4])
-                    text(J+0.2, ymeans(i,end)+0.05, sprintf("%.2f",y(i,end)), 'Color', [.4 .4 .4])
+                if y(i,end)>0.05
+                    text(J+0.2, ymeans(i,end)-0.02, ylabels(i),'Fontweight', 'Bold', 'Color', [.4 .4 .4])
+                    text(J+0.2, ymeans(i,end)+0.02, sprintf("%.2f",y(i,end)), 'Color', [.4 .4 .4])
                 end
             end
             
@@ -170,15 +208,32 @@ classdef alluvial
             for j=1:J
                 text(j, 1.03, xlabels(j), 'HorizontalAlignment', 'center', 'Color', [.4 .4 .4])
             end
-            text((J+1)/2, 1.1, "Periods", 'HorizontalAlignment', 'center', 'Fontsize', 12,'Fontweight', 'Bold', 'Color', [.4 .4 .4])
+            text((J+1)/2, 1.07, "Periods", 'HorizontalAlignment', 'center', 'Fontsize', 12,'Fontweight', 'Bold', 'Color', [.4 .4 .4])
             
             % Title
-            text((J+1)/2, -0.13, title, 'HorizontalAlignment', 'center', 'Fontsize', 18)
+            text((J+1)/2, -0.12, title, 'HorizontalAlignment', 'center', 'Fontsize', 20)
             
             % Font
             set(gca, 'FontName', 'SansSerif')
 
         end
+        
+        
+        
+        % Get colors
+        function colors = get_colors(palette_name, I)
+            
+            % Load original paltte
+            palette = palettes.(palette_name);
+            
+            % Transform
+            k = 10;
+            hsv=rgb2hsv(palette);
+            colors=interp1(linspace(0,1,size(palette,1)),hsv,linspace(0,1,3+(I-1)*k));
+            colors=hsv2rgb(colors);
+            colors=colors(2:k:end-1,:);
+        end
+            
         
     end
     

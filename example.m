@@ -1,15 +1,31 @@
 % Example file
 
-Q = [0.6 0.1 0.3
-     0.2 0.7 0.1
-     0.3 0.3 0.4];
-x = [1, 2, 3, 99, 100];
-ylabels = ["State 1", "State 2", "State 3"];
-xlabels = ["1", "2", "3", "\infty", "\infty"];
-title = "State to State Transitions";
+%% Example 2: with options
 
-% Plot transitions
+% Set parameters
+rng(1);
+Q = rand(5);
+Q = Q ./ sum(Q,2);
+x = [1, 2, 3, 99, 100];
+
+% Plot transitions without options
 figure();
-alluvial.plot_transitions(Q, x, ylabels, xlabels, title);
-saveas(gcf,'example.png');
-close();
+set(gca, 'OuterPosition', [-0.1,-0.16,1.17,1.1])
+alluvial.plot_transitions(Q, x);
+saveas(gcf,'example1.png');
+
+%% Example 2: with options
+
+% Options
+w0 = [1, 2, 4, 5, 1];
+ylabels = ["Idea", "New", "Used", "Old", "Broken"];
+xlabels = ["0", "1", "2", "\infty", "\infty"];
+palette = "inferno";
+title = "Product Life Cycle";
+
+% Plot transitions with options
+figure();
+set(gca, 'OuterPosition', [-0.1,-0.16,1.17,1.1])
+alluvial.plot_transitions(Q, x, "w0", w0, "palette", palette, ...
+    "ylabels", ylabels, "xlabels", xlabels,  "title", title);
+saveas(gcf,'example2.png');
