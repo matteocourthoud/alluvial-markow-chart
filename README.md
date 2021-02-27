@@ -1,13 +1,15 @@
 # Alluvial Markow Chart
 by [Matteo Courthoud](https://matteocourthoud.github.io/)
 
-class file: `alluvial.m`
+function file: `alluvial.m`
 
 example file: `example.m`
 
+palettes file: `palettes.m`
+
 ---
 
-This class produces alluvial diagrams from a Markow transition matrix. It displays the probability distribution over states at different points in time.
+This function produces alluvial diagrams from a Markow transition matrix. It displays the probability distribution over states at different points in time.
 
 ```
 rng(1);
