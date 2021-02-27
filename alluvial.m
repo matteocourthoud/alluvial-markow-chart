@@ -24,6 +24,9 @@ classdef alluvial
             % Optional inputs
             % ---------------
             %
+            %  - w0 (array): 
+            %       initial weights
+            %
             %  - ylabels (str): 
             %       labels of y axis
             %
@@ -33,8 +36,8 @@ classdef alluvial
             %  - title (str): 
             %       plot title
             %
-            %  - w0 (array): 
-            %       initial weights
+            %  - palette (str): 
+            %       color palette
             
             % Assign default values
             [ylabels, xlabels, title, w0, palette] = alluvial.get_params(Q, x, varargin);
@@ -81,16 +84,19 @@ classdef alluvial
                         
             % Assign default values
             for k=2:2:size(vars,2)
-                if strcmp(vars{k-1}, "xlabels")
-                    xlabels = vars{k};
-                elseif strcmp(vars{k-1}, "ylabels")
-                    ylabels = vars{k};
-                elseif strcmp(vars{k-1}, "title")
-                    title = vars{k};
-                elseif strcmp(vars{k-1}, "w0")
-                    w0 = vars{k};
-                elseif strcmp(vars{k-1}, "palette")
-                    palette = alluvial.get_colors(vars{k}, size(Q,1));
+                switch vars{k-1}
+                    case "xlabels"
+                        xlabels = vars{k};
+                    case  "ylabels"
+                        ylabels = vars{k};
+                    case "title"
+                        title = vars{k};
+                    case "w0"
+                        w0 = vars{k};
+                    case "palette"
+                        palette = alluvial.get_colors(vars{k}, size(Q,1));
+                    otherwise
+                        error('Invalid argument')
                 end
             end
         end
