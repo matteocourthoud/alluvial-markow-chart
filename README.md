@@ -27,7 +27,7 @@ The `plot_transitions`command produces the final output.
 alluvial.plot_transitions(Q, x, ylabels, xlabels, title);
 ```
 
-![example1](example1.png)
+![example1](figures/example1.png)
 
 Additionally, the user can provide the following options:
 
@@ -45,18 +45,13 @@ palette = "inferno";
 title = "Product Life Cycle";
 ```
 
-![palettes](palettes.png)
+![palettes](figures/palettes.png)
 
 The parameters are inputed the MATLAB way.
 
 ```
- alluvial.plot_transitions(Q, x, ...
- 													 "w0", w0, ...
- 													 "palette", palette, 
- 													 "ylabels", ylabels, 
- 													 "xlabels", xlabels,  
- 													 "title", title);
+ alluvial.plot_transitions(Q, x, "w0", w0, "palette", palette, "ylabels", ylabels, "xlabels", xlabels, "title", title);
 ```
 
-![example2](example2.png)
+![example2](figures/example2.png)
 

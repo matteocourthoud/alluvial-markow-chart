@@ -12,7 +12,7 @@ x = [1, 2, 3, 99, 100];
 figure();
 set(gca, 'OuterPosition', [-0.1,-0.16,1.17,1.1])
 alluvial.plot_transitions(Q, x);
-saveas(gcf,'example1.png');
+saveas(gcf,'figures/example1.png');
 
 %% Example 2: with options
 
@@ -26,6 +26,5 @@ title = "Product Life Cycle";
 % Plot transitions with options
 figure();
 set(gca, 'OuterPosition', [-0.1,-0.16,1.17,1.1])
-alluvial.plot_transitions(Q, x, "w0", w0, "palette", palette, ...
-    "ylabels", ylabels, "xlabels", xlabels,  "title", title);
-saveas(gcf,'example2.png');
+alluvial.plot_transitions(Q, x, "w0", w0, "palette", palette, "ylabels", ylabels, "xlabels", xlabels,  "title", title);
+saveas(gcf,'figures/example2.png');
