@@ -35,7 +35,7 @@ Additionally, the user can provide the following options:
 - `xlabels`: labels of the horizontal axis
 - `ylabels`: labels of the vertical axis
 - `title`: title of the graph
-- `palette`: color palette among viridian (default), inferno, magma, plasma
+- `palette`: color palette among viridian (default), inferno, magma, plasma, cividis
 
 ```
 w0 = [1, 2, 4, 5, 1];
@@ -45,10 +45,17 @@ palette = "inferno";
 title = "Product Life Cycle";
 ```
 
+![palettes](palettes.png)
+
 The parameters are inputed the MATLAB way.
 
 ```
- alluvial.plot_transitions(Q, x, "w0", w0, "palette", palette, "ylabels", ylabels, "xlabels", xlabels,  "title", title);
+ alluvial.plot_transitions(Q, x, ...
+ 													 "w0", w0, ...
+ 													 "palette", palette, 
+ 													 "ylabels", ylabels, 
+ 													 "xlabels", xlabels,  
+ 													 "title", title);
 ```
 
 ![example2](example2.png)
